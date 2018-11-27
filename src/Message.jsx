@@ -5,19 +5,19 @@ class Message extends Component
   render() {
     const { type, content, username } = this.props.message;
 
-    const messageOrNotification = (type === 'incomingMessage')
+    return ((type === 'incomingMessage')
       ? (
-        [<span className="message-username">{ username }</span>,
-        <span className="message-content">{ content }</span>]
+        <div className="message">
+          <span className="message-username">{ username }</span>
+          <span className="message-content">{ content }</span>
+        </div>
       ) : (
-        <span className="message system">{ content }</span>
+        <div className="message">
+          <span className="message system">{ content }</span>
+        </div>
       )
-
-    return (
-      <div className="message">
-        {messageOrNotification}
-      </div>
-    );
+    )
+    
   }
 }
 
