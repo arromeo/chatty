@@ -6,13 +6,16 @@ class Message extends Component
     const { type, content, username } = this.props.message;
 
     const messageOrNotification = (type === 'incomingMessage')
-      ? (<span className="message-username">{ username }</span>)
-      : (<span className="message-username"> Message: </span>)
+      ? (
+        [<span className="message-username">{ username }</span>,
+        <span className="message-content">{ content }</span>]
+      ) : (
+        <span className="message system">{ content }</span>
+      )
 
     return (
       <div className="message">
         {messageOrNotification}
-        <span className="message-content">{ content }</span>
       </div>
     );
   }
