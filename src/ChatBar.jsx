@@ -9,9 +9,15 @@ class ChatBar extends Component {
       }
     }
 
+    let submitUserChange = (event) => {
+      if(event.key == 'Enter'){
+        this.props.onUserChange(event);
+      }
+    }
+
     return (
       <footer className="chatbar">
-        <input onChange={ (event) => this.props.onUserChange(event) } className="chatbar-username" placeholder="Your Name (Optional)" value={this.props.currentUser.name}/>
+        <input onChange={ (event) => this.props.changeName(event) } onKeyPress={ submitUserChange } className="chatbar-username" placeholder="Your Name (Optional)" value={this.props.currentUser.name}/>
         <input className="chatbar-message" onKeyPress={ handleKeyPress } />
       </footer>
     );

@@ -8,6 +8,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      oldUser: 'Bob',
       currentUser: {name: 'Bob'},
       messages: []
     }
@@ -15,6 +16,7 @@ class App extends Component {
     this.changeCurrentUser = this.changeCurrentUser.bind(this);
     this.newMessage = this.newMessage.bind(this);
     this.displayMessage = this.displayMessage.bind(this);
+    this.currentNameChange = this.currentNameChange.bind(this);
   }
 
   componentDidMount() {
@@ -26,13 +28,14 @@ class App extends Component {
   }
 
   changeCurrentUser(event) {
-    const oldName = this.state.currentUser.name;
-    const newName = event.target.value;
+    const oldName = this.state.oldUser;
+    const newName = this.state.currentUser.name;
     this.setState({currentUser: {name: newName}});
 
     const newMessage = {type: 'incomingNotification', content: `${oldName} changed their name to ${newName}`};
-    const messages = this.state.messages.concat(newMessage);
-    this.setState({messages: messages});
+
+    this.setState({oldName: this.state.currentUser.name});
+    this.socket.send(JSON.stringify(newMessage));
   }
 
   newMessage(event) {
@@ -46,6 +49,10 @@ class App extends Component {
     this.setState({messages: messages});
   }
 
+  currentNameChange(event) {
+    this.setState({currentUser: {name: event.target.value}});
+  }
+
   render() {
       return (
         <div>
@@ -54,6 +61,7 @@ class App extends Component {
           <ChatBar currentUser={ this.state.currentUser } 
           onUserChange={ this.changeCurrentUser }
           newMessage={ this.newMessage }
+          changeName={ this.currentNameChange }
           />
         </div>
       );
