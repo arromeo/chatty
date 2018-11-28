@@ -3,6 +3,7 @@ import Message from './Message.jsx';
 
 class MessageList extends Component {
 
+  //TODO: Fix scroll so the window stays at the bottom.
   render() {
     const messages = this.props.messages.map((message) => {
       return (<Message key={ message.id } message={ message } />)
@@ -14,7 +15,6 @@ class MessageList extends Component {
       </main>
     );
   }
-
   
 }
 

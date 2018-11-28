@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       oldUser: 'Bob',
       currentUser: {name: 'Bob'},
+      userCount: 0,
       messages: []
     }
     this.socket = '';
@@ -27,30 +28,38 @@ class App extends Component {
     }
   }
 
+  currentNameChange(event) {
+    this.setState({currentUser: {name: event.target.value}});
+  }
+
   changeCurrentUser(event) {
     const oldName = this.state.oldUser;
     const newName = this.state.currentUser.name;
     this.setState({currentUser: {name: newName}});
 
-    const newMessage = {type: 'incomingNotification', content: `${oldName} changed their name to ${newName}`};
+    const newMessage = {type: 'postNotification', content: `${oldName} changed their name to ${newName}`};
 
     this.setState({oldName: this.state.currentUser.name});
     this.socket.send(JSON.stringify(newMessage));
   }
 
   newMessage(event) {
-    const newMessage = {type: 'incomingMessage', username: this.state.currentUser.name, content: event.target.value};
+    const newMessage = {type: 'postMessage', username: this.state.currentUser.name, content: event.target.value};
     this.socket.send(JSON.stringify(newMessage));
   }
 
   displayMessage(message) {
-    const newMessage = {type: 'incomingMessage', username: message.username, content: message.content, id: message.id};
+    let newMessage = {};
+    if (message.type === 'incomingMessage') {
+      newMessage = {type: 'incomingMessage', username: message.username, content: message.content, id: message.id};
+    } else if (message.type === 'incomingNotification') {
+      newMessage = {type: 'incomingNotification', content: message.content, id: message.id};
+    } else {
+      throw new Error('Unknown event type ' + message.type);
+    }
+
     const messages = this.state.messages.concat(newMessage);
     this.setState({messages: messages});
-  }
-
-  currentNameChange(event) {
-    this.setState({currentUser: {name: event.target.value}});
   }
 
   render() {

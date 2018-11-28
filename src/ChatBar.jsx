@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 class ChatBar extends Component {
+
   render() {
     let handleKeyPress = (event) => {
       if(event.key == 'Enter'){
