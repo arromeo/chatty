@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 import Header from './Header.jsx';
-import messages from '../data.json';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      oldUser: 'Bob',
-      currentUser: {name: 'Bob'},
+      oldUser: 'Anon',
+      currentUser: {name: 'Anon'},
       userCount: 0,
       messages: []
     }
@@ -37,23 +36,34 @@ class App extends Component {
     const newName = this.state.currentUser.name;
     this.setState({currentUser: {name: newName}});
 
-    const newMessage = {type: 'postNotification', content: `${oldName} changed their name to ${newName}`};
+    if (oldName !== newName) {
+      const newMessage = {type: 'postNotification', content: `${oldName} changed their name to ${newName}`};
 
-    this.setState({oldName: this.state.currentUser.name});
-    this.socket.send(JSON.stringify(newMessage));
+      this.setState({oldName: this.state.currentUser.name});
+      this.socket.send(JSON.stringify(newMessage));
+    }
   }
 
   newMessage(event) {
-    const newMessage = {type: 'postMessage', username: this.state.currentUser.name, content: event.target.value};
+    const newMessage = {
+      type: 'postMessage',
+      username: this.state.currentUser.name,
+      content: event.target.value
+    };
     this.socket.send(JSON.stringify(newMessage));
   }
 
   displayMessage(message) {
+
     let newMessage = {};
     if (message.type === 'incomingMessage') {
-      newMessage = {type: 'incomingMessage', username: message.username, content: message.content, id: message.id};
+      newMessage = {type: 'incomingMessage', username: message.username, color: message.color, content: message.content, id: message.id};
     } else if (message.type === 'incomingNotification') {
       newMessage = {type: 'incomingNotification', content: message.content, id: message.id};
+    } else if (message.type === 'userCountChange') {
+      newMessage = {type: 'incomingNotification', content:
+      message.content , id: message.id};
+      this.setState({userCount: message.userCount});
     } else {
       throw new Error('Unknown event type ' + message.type);
     }
@@ -65,7 +75,7 @@ class App extends Component {
   render() {
       return (
         <div>
-          <Header />
+          <Header userCount={ this.state.userCount }/>
           <MessageList messages={ this.state.messages } />
           <ChatBar currentUser={ this.state.currentUser } 
           onUserChange={ this.changeCurrentUser }
