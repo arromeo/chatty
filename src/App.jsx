@@ -31,15 +31,14 @@ class App extends Component {
     this.setState({currentUser: {name: event.target.value}});
   }
 
-  changeCurrentUser(event) {
+  changeCurrentUser() {
     const oldName = this.state.oldUser;
     const newName = this.state.currentUser.name;
-    this.setState({currentUser: {name: newName}});
 
     if (oldName !== newName) {
-      const newMessage = {type: 'postNotification', content: `${oldName} changed their name to ${newName}`};
+      const newMessage = {type: 'postNotification', content: `${oldName} changed their name to ${newName}`, user: newName};
 
-      this.setState({oldName: this.state.currentUser.name});
+      this.setState({ oldUser: newName });
       this.socket.send(JSON.stringify(newMessage));
     }
   }
