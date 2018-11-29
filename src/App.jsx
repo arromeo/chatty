@@ -67,29 +67,12 @@ class App extends Component {
   // Takes in a message, determines what type of message it is to build the
   // proper object then adds the message to the state for display.
   displayMessage(message) {
-    let newMessage = {};
-    if (message.type === 'incomingMessage') {
-      newMessage = {
-        type: 'incomingMessage',
-        username: message.username,
-        color: message.color,
-        content: message.content,
-        id: message.id
-      };
-    } else if (message.type === 'incomingNotification') {
-      newMessage = {
-        type: 'incomingNotification',
-        content: message.content,
-        id: message.id};
-    } else if (message.type === 'userCountChange') {
-      newMessage = {type: 'incomingNotification', content:
-      message.content , id: message.id};
+    if (message.type === 'userCountChange') {
+      message.type = 'incomingNotification';
       this.setState({userCount: message.userCount});
-    } else {
-      throw new Error('Unknown event type ' + message.type);
     }
 
-    const messages = this.state.messages.concat(newMessage);
+    const messages = this.state.messages.concat(message);
     this.setState({messages: messages});
   }
 

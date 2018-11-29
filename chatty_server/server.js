@@ -29,7 +29,7 @@ function broadcastMessage(message, color) {
 
   switch (message.type) {
     case 'postMessage':
-    console.log(`${message.id}: ${message.username} says ${message.content}`);
+      console.log(`${message.id}: ${message.username} says ${message.content}`);
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify({
