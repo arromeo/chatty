@@ -14,7 +14,7 @@ body {
 }
 
 .chatbar {
-  background: tomato;
+  background: #0B2545;
   border-top: 1px solid black;
   bottom: 0;
   display: flex;
@@ -69,7 +69,7 @@ body {
 }
 
 .navbar {
-  background: tomato;
+  background: #0B2545;
   border-bottom: 1px solid black;
   height: 60px;
   left: 0;
@@ -80,7 +80,7 @@ body {
 }
 
 .navbar-brand {
-  color: inherit;
+  color: #8DA9C4;
   display: block;
   float: left;
   font-weight: 700;
@@ -105,5 +105,10 @@ body {
 }
 
 .user-counter p {
+  color: #8DA9C4;
   margin: auto;
+}
+
+.chat-image {
+  max-width: 60%;
 }

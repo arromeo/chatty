@@ -19,6 +19,7 @@ class App extends Component {
     this.currentNameChange = this.currentNameChange.bind(this);
   }
 
+  // Once the main app component mounts, connect to the WS server
   componentDidMount() {
     this.socket = new WebSocket('ws:localhost:3001');
     this.socket.onmessage = (event) => {
@@ -27,22 +28,33 @@ class App extends Component {
     }
   }
 
+  // Allows the controlled component to be altered.
   currentNameChange(event) {
     this.setState({currentUser: {name: event.target.value}});
   }
 
+  // Overwrites the previous name with the new name. Beofre it is submitted,
+  // the oldUser is the user that displays on messages.
   changeCurrentUser() {
     const oldName = this.state.oldUser;
     const newName = this.state.currentUser.name;
 
+    // This ensures that the name was actually changed. If the user hits
+    // 'Enter' or blurs the username input without changing, this section
+    // never happens.
     if (oldName !== newName) {
-      const newMessage = {type: 'postNotification', content: `${oldName} changed their name to ${newName}`, user: newName};
+      const newMessage = {
+        type: 'postNotification',
+        content: `${oldName} changed their name to ${newName}`,
+        user: newName
+      };
 
       this.setState({ oldUser: newName });
       this.socket.send(JSON.stringify(newMessage));
     }
   }
 
+  // Sends a new message to the server to be broadcast to other clients.
   newMessage(event) {
     const newMessage = {
       type: 'postMessage',
@@ -52,13 +64,23 @@ class App extends Component {
     this.socket.send(JSON.stringify(newMessage));
   }
 
+  // Takes in a message, determines what type of message it is to build the
+  // proper object then adds the message to the state for display.
   displayMessage(message) {
-
     let newMessage = {};
     if (message.type === 'incomingMessage') {
-      newMessage = {type: 'incomingMessage', username: message.username, color: message.color, content: message.content, id: message.id};
+      newMessage = {
+        type: 'incomingMessage',
+        username: message.username,
+        color: message.color,
+        content: message.content,
+        id: message.id
+      };
     } else if (message.type === 'incomingNotification') {
-      newMessage = {type: 'incomingNotification', content: message.content, id: message.id};
+      newMessage = {
+        type: 'incomingNotification',
+        content: message.content,
+        id: message.id};
     } else if (message.type === 'userCountChange') {
       newMessage = {type: 'incomingNotification', content:
       message.content , id: message.id};
@@ -71,6 +93,7 @@ class App extends Component {
     this.setState({messages: messages});
   }
 
+  // Renders the main app and passes state to flow down to descendents.
   render() {
       return (
         <div>
