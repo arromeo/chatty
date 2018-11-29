@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import 'emoji-mart/css/emoji-mart.css';
+import data from 'emoji-mart/data/apple.json';
+import { NimblePicker } from 'emoji-mart';
 
 class ChatBar extends Component {
 
@@ -34,6 +37,7 @@ class ChatBar extends Component {
         <input 
           className="chatbar-message"
           onKeyPress={ handleKeyPress } />
+        <NimblePicker set='apple' data={ data }/>
       </footer>
     );
   }
