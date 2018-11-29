@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Message from './Message.jsx';
 
 class MessageList extends Component {
 
   constructor(props) {
     super(props);
-    this.chatRef = null;
+    this.divRef = null;
     
-    this.setChatRef = element => {
-      this.chatRef = element;
-    }
+    this.setDivRef = element => {
+      this.divRef = element;
+    };
   }
 
+  // Keeps scroll at bottom of chat.
+  // TODO: Figure out how to conditionally do this so the chat does not snap
+  // to bottom when user is trying to view history.
   componentDidUpdate() {
-    this.chatRef.scrollIntoView({behavior: 'smooth'});
+    this.divRef.scrollIntoView({behavior: 'smooth'});
   }
 
   render() {
@@ -23,9 +25,9 @@ class MessageList extends Component {
     });
 
     return (
-      <main className="messages">
+      <main  className="messages">
         { messages }
-        <div ref={ this.setChatRef }></div>
+        <div ref={ this.setDivRef }></div>
       </main>
     );
   }
