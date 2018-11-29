@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Message from './Message.jsx';
 
 class MessageList extends Component {
 
-  //TODO: Fix scroll so the window stays at the bottom when overflowed.
+  constructor(props) {
+    super(props);
+    this.chatRef = null;
+    
+    this.setChatRef = element => {
+      this.chatRef = element;
+    }
+  }
+
+  componentDidUpdate() {
+    this.chatRef.scrollIntoView({behavior: 'smooth'});
+  }
+
   render() {
     const messages = this.props.messages.map((message) => {
       return (<Message key={ message.id } message={ message } />)
@@ -12,6 +25,7 @@ class MessageList extends Component {
     return (
       <main className="messages">
         { messages }
+        <div ref={ this.setChatRef }></div>
       </main>
     );
   }

@@ -10,7 +10,7 @@ class App extends Component {
       oldUser: 'Anon',
       currentUser: {name: 'Anon'},
       userCount: 0,
-      messages: []
+      messages: [],
     }
     this.socket = '';
     this.changeCurrentUser = this.changeCurrentUser.bind(this);
