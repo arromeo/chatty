@@ -1,12 +1,55 @@
 import React, {Component} from 'react';
 import 'emoji-mart/css/emoji-mart.css';
+// import '@fortawesome/fontawesome-free/css/all.min.css';
 import data from 'emoji-mart/data/apple.json';
-import { NimblePicker } from 'emoji-mart';
+import { NimblePicker, Emoji } from 'emoji-mart';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGrin } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faGrin);
+
+class EmojiPicker extends Component {
+
+  constructor (props) {
+    super(props);
+    this.addEmoji = this.addEmoji.bind(this);
+  }
+
+  addEmoji (event) {
+    this.props.insertEmoji(event.native);
+  }
+
+  render() {
+    return this.props.visible ? 
+    (<NimblePicker style={{ position: 'absolute', bottom: '65px', right: '0px' }} onSelect={ this.addEmoji } set='apple' data={ data }/>) : null;
+  }
+}
 
 class ChatBar extends Component {
 
+  constructor (props) {
+    super(props);
+    this.state = {
+      emojiPickerVisible: false
+    }
+
+    this.inputRef = null;
+
+    this.setInputRef = element => {
+      this.inputRef = element;
+    };
+
+    this.insertEmoji = this.insertEmoji.bind(this);
+  }
+
+  insertEmoji (nativeEmoji) {
+    this.inputRef.value += nativeEmoji;
+  }
+
   render() {
     // Submits the message to be sent to the server and broadcast.
+
     let handleKeyPress = (event) => {
       if(event.key == 'Enter'){
         this.props.newMessage(event);
@@ -26,6 +69,10 @@ class ChatBar extends Component {
         this.props.onUserChange(event);
     }
 
+    let emojiButtonClick = (event) => {
+      this.setState({emojiPickerVisible: !this.state.emojiPickerVisible});
+    }
+    
     return (
       <footer className="chatbar">
         <input
@@ -35,9 +82,14 @@ class ChatBar extends Component {
           className="chatbar-username"
           value={this.props.currentUser.name} />
         <input 
+          ref={ this.setInputRef }
           className="chatbar-message"
-          onKeyPress={ handleKeyPress } />
-        <NimblePicker set='apple' data={ data }/>
+          onKeyPress={ handleKeyPress }
+          />
+          <span className="emoji-icon" onClick={ emojiButtonClick }>
+            <FontAwesomeIcon icon="grin" color="#8DA9C4" size='2x'></FontAwesomeIcon>
+          </span>
+          <EmojiPicker visible={ this.state.emojiPickerVisible } insertEmoji={ this.insertEmoji }/>
       </footer>
     );
   }
