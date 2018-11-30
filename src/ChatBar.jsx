@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import 'emoji-mart/css/emoji-mart.css';
-// import '@fortawesome/fontawesome-free/css/all.min.css';
 import data from 'emoji-mart/data/apple.json';
-import { NimblePicker, Emoji } from 'emoji-mart';
+import { NimblePicker } from 'emoji-mart';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin } from '@fortawesome/free-solid-svg-icons'
@@ -11,15 +10,18 @@ library.add(faGrin);
 
 class EmojiPicker extends Component {
 
+  // Event listener for emoji picker.
   constructor (props) {
     super(props);
     this.addEmoji = this.addEmoji.bind(this);
   }
 
+  // Action sends emoji back up to chat bar when one is selected.
   addEmoji (event) {
     this.props.insertEmoji(event.native);
   }
 
+  // Renders the emoji picker based on state handed down from chat bar.
   render() {
     return this.props.visible ? 
     (<NimblePicker style={{ position: 'absolute', bottom: '65px', right: '0px' }} onSelect={ this.addEmoji } set='apple' data={ data }/>) : null;

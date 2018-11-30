@@ -1,45 +1,49 @@
-React Boilerplate
+Chatty
 =====================
 
-A minimal and light dev environment for ReactJS.
+A simple chat app built using React and WebSockets.
 
 ### Usage
 
-Clone the boilerplate and create your own git repo.
+- Clone this repo
+- In the newly created folder run `npm install`
+- Start the WebSocket server `npm start ./chatty_server/server.js`
+- Start the web server `npm start`
+- In a browser navigate to `localhost:3000`
+- To test, create a new window or tab and navigate to the same URL
+- Enjoy
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+### Features
 
-Install the dependencies and start the server.
+Chatty allows for live conversation with other clients currently connected to the server:
+![chat demo](./docs/images/chat.png)
+Allows for name changes:
+![name change typed in](./docs/images/name_change.png)
+![name change submitted](./docs/images/name_change_submit.png)
+Pulls image URLs out of messages and renders them in the chat:
+![image submitted](./docs/images/image.png)
+Includes an emoji picker:
+![emoji picker demo](./docs/images/emoji_picker.png)
+![emoji in chat](./docs/images/emoji.png)
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
+### Roadmap
 
-### Static Files
+There are a number of features currently in the Chatty development pipeline:
 
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
+- Turn non-image URLS into clickable links
+- Setup media queries to make for better mobile rendering
+- Name picker before connecting to server
+- Preventing duplicate names (adds number to end)
+- Name color picker
+- List currently connected users
+- Option to change color of messages
 
 ### Dependencies
 
 * React
 * Webpack
+* ws (WebSockets)
+* react-fontawesome
+* emoji-mart
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
