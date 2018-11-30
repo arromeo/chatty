@@ -4,6 +4,7 @@
   "description": "Chat app built using React",
   "scripts": {
     "lint": "eslint --ext .jsx,.js src",
+    "server": "node ./chatty_server/server.js",
     "start": "node server.js"
   },
   "repository": {
@@ -53,6 +54,9 @@
     "font-awesome-webpack": "0.0.5-beta.2",
     "prop-types": "^15.6.2",
     "react": "15.4.2",
+    "css-loader": "^1.0.1",
+    "express": "4.16.4",
+    "uuid": "^3.3.2",
     "react-dom": "15.4.2",
     "ws": "^6.1.2"
   }

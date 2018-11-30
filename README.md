@@ -7,8 +7,8 @@ A simple chat app built using React and WebSockets.
 
 - Clone this repo
 - In the newly created folder run `npm install`
-- Start the WebSocket server `npm start ./chatty_server/server.js`
-- Start the web server `npm start`
+- Start the WebSocket server `npm run server`
+- In another terminal start the web server `npm start`
 - In a browser navigate to `localhost:3000`
 - To test, create a new window or tab and navigate to the same URL
 - Enjoy
