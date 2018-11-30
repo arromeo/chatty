@@ -16,14 +16,17 @@ A simple chat app built using React and WebSockets.
 ### Features
 
 Chatty allows for live conversation with other clients currently connected to the server:
-![chat demo](./docs/images/chat.png =400x)
+<img src="./docs/images/chat.png" alt="chat demo" width="400"/>
+
 Allows for name changes:
-![name change submitted](./docs/images/name_change_submit.png =400x)
+<img src="./docs/images/name_change_submit.png" alt="name change demo" width="400"/>
+
 Pulls image URLs out of messages and renders them in the chat:
-![image submitted](./docs/images/image.png =400x)
+<img src="./docs/images/image.png" alt="chat image demo" width="400"/>
+
 Includes an emoji picker:
-![emoji picker demo](./docs/images/emoji_picker.png =400x)
-![emoji in chat](./docs/images/emoji.png =400x)
+<img src="./docs/images/emoji_picker.png" alt="emoji picker demo" width="400"/>
+<img src="./docs/images/emoji.png" alt="chat emoji demo" width="400"/>
 
 ### Roadmap
 
