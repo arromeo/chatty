@@ -1,5 +1,4 @@
 var path = require('path')
-var webpack = require('webpack')
 
 module.exports = {
   devtool: 'eval',
@@ -13,8 +12,10 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader',
-        include: path.join(__dirname, 'src')
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader'
+        }
       },
       {
         test: /\.css$/,
