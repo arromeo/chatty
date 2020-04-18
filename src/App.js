@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 // Components
-import { MessageList } from './features/message/MessageList'
+import { MessageList } from './features/message'
 import { InfoBar } from './features/chat/InfoBar'
 import { Compose } from './features/chat/Compose'
 

@@ -16,13 +16,14 @@
   "keywords": [
     "react",
     "reactjs",
-    "boilerplate",
-    "reload",
-    "live",
-    "edit",
+    "redux",
+    "websockets",
     "webpack"
   ],
   "author": "Noah-Jerome Lotzer <n.lotzer@neusta.de>",
+  "contributors": [
+    "Adam Romeo <adam.r.romeo@gmail.com> (https://adamromeo.dev)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/arromeo/chatty/issues"
@@ -50,7 +51,6 @@
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "sockjs-client": "1.4.0",
     "styled-components": "5.1.0",
     "uuid": "7.0.3",
     "ws": "7.2.3"
