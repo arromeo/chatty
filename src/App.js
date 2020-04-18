@@ -1,8 +1,18 @@
 import React, { Component } from 'react'
-import ChatBar from './ChatBar'
-import Header from './Header'
+import styled from 'styled-components'
 
+// Components
 import { MessageList } from './features/message/MessageList'
+import { InfoBar } from './features/chat/InfoBar'
+import { Compose } from './features/chat/Compose'
+
+const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+`
 
 class App extends Component {
   constructor(props) {
@@ -80,16 +90,16 @@ class App extends Component {
   // Renders the main app and passes state to flow down to descendents.
   render() {
     return (
-      <div>
-        <Header userCount={this.state.userCount} />
+      <Layout>
+        <InfoBar userCount={this.state.userCount} />
         <MessageList messages={this.state.messages} />
-        <ChatBar
+        <Compose
           currentUser={this.state.currentUser}
           onUserChange={this.changeCurrentUser}
           newMessage={this.newMessage}
           changeName={this.currentNameChange}
         />
-      </div>
+      </Layout>
     )
   }
 }

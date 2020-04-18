@@ -3,7 +3,7 @@ body {
   color: black;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  margin: 70px 0;
+  height: 100%;
 }
 
 .chatbar {
