@@ -39,7 +39,7 @@ export function Compose({ newMessage, onUserChange, changeName, currentUser }) {
         onChange={handleNameChange}
         onBlur={handleUsernameFieldBlur}
         onKeyPress={handleUsernameKeyPress}
-        value={currentUser.name}
+        value={currentUser}
       />
       <MessageField onKeyPress={handleComposeKeypress} />
     </ComposeContainer>
