@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/arromeo/chatty",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
