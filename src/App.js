@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 
 // Components
@@ -14,94 +14,64 @@ const Layout = styled.div`
   width: 100%;
 `
 
-class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      oldUser: 'Anon',
-      currentUser: { name: 'Anon' },
-      userCount: 0,
-      messages: []
+export function App() {
+  const [currentUsername, setCurrentUsername] = useState('Anon')
+  const [oldUsername, setOldUsername] = useState('Anon')
+  const [userCount, setUserCount] = useState(0)
+  const [messages, setMessages] = useState([])
+  const socket = useRef()
+
+  useEffect(() => {
+    socket.current = new WebSocket('ws:localhost:3001')
+
+    socket.current.onmessage = (event) => {
+      const newMessage = JSON.parse(event.data)
+      if (newMessage.type === 'userCountChange') {
+        newMessage.type = 'incomingNotification'
+        setUserCount(newMessage.userCount)
+      }
+      setMessages((prev) => prev.concat(newMessage))
     }
-    this.socket = ''
-    this.changeCurrentUser = this.changeCurrentUser.bind(this)
-    this.newMessage = this.newMessage.bind(this)
-    this.displayMessage = this.displayMessage.bind(this)
-    this.currentNameChange = this.currentNameChange.bind(this)
-  }
 
-  // Once the main app component mounts, connect to the WS server
-  componentDidMount() {
-    this.socket = new WebSocket('ws:localhost:3001')
-    this.socket.onmessage = (event) => {
-      let newMessage = JSON.parse(event.data)
-      this.displayMessage(newMessage)
-    }
-  }
+    return () => socket.current.close()
+  }, [])
 
-  // Allows the controlled component to be altered.
-  currentNameChange(event) {
-    this.setState({ currentUser: { name: event.target.value } })
-  }
+  const currentNameChange = (event) => setCurrentUsername(event.target.value)
 
-  // Overwrites the previous name with the new name. Beofre it is submitted,
-  // the oldUser is the user that displays on messages.
-  changeCurrentUser() {
-    const oldName = this.state.oldUser
-    const newName = this.state.currentUser.name
-
-    // This ensures that the name was actually changed. If the user hits
-    // 'Enter' or blurs the username input without changing, this section
-    // never happens.
-    if (oldName !== newName) {
+  const changeCurrentUser = () => {
+    if (oldUsername !== currentUsername) {
       const newMessage = {
         type: 'postNotification',
-        content: `${oldName} changed their name to ${newName}`,
-        user: newName
+        content: `${oldUsername} changed their name to ${currentUsername}`,
+        user: currentUsername
       }
 
-      this.setState({ oldUser: newName })
-      this.socket.send(JSON.stringify(newMessage))
+      setOldUsername(currentUsername)
+      socket.current.send(JSON.stringify(newMessage))
     }
   }
 
-  // Sends a new message to the server to be broadcast to other clients.
-  newMessage(event) {
+  const newMessage = (event) => {
     const newMessage = {
       type: 'postMessage',
-      username: this.state.currentUser.name,
+      username: currentUsername,
       content: event.target.value
     }
-    this.socket.send(JSON.stringify(newMessage))
+    socket.current.send(JSON.stringify(newMessage))
   }
 
-  // Takes in a message, determines what type of message it is to build the
-  // proper object then adds the message to the state for display.
-  displayMessage(message) {
-    if (message.type === 'userCountChange') {
-      message.type = 'incomingNotification'
-      this.setState({ userCount: message.userCount })
-    }
-
-    const messages = this.state.messages.concat(message)
-    this.setState({ messages: messages })
-  }
-
-  // Renders the main app and passes state to flow down to descendents.
-  render() {
-    return (
-      <Layout>
-        <InfoBar userCount={this.state.userCount} />
-        <MessageList messages={this.state.messages} />
-        <Compose
-          currentUser={this.state.currentUser}
-          onUserChange={this.changeCurrentUser}
-          newMessage={this.newMessage}
-          changeName={this.currentNameChange}
-        />
-      </Layout>
-    )
-  }
+  return (
+    <Layout>
+      <InfoBar userCount={userCount} />
+      <MessageList messages={messages} />
+      <Compose
+        currentUser={currentUsername}
+        onUserChange={changeCurrentUser}
+        newMessage={newMessage}
+        changeName={currentNameChange}
+      />
+    </Layout>
+  )
 }
 
 export default App
