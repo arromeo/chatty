@@ -4,7 +4,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 
 module.exports = {
   devtool: 'eval',
-  entry: ['webpack-dev-server/client?http://localhost:3000', './src/index.jsx'],
+  entry: ['webpack-dev-server/client?http://localhost:3000', './src/index.js'],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
