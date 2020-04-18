@@ -12,8 +12,12 @@ const ComposeContainer = styled.div`
   padding: 0.25rem 0.5rem;
 `
 
-const UsernameField = styled.input``
-const MessageField = styled.input``
+const UsernameField = styled.input`
+  padding: 4px;
+`
+const MessageField = styled.input`
+  padding: 4px;
+`
 
 export function Compose({ newMessage, onUserChange, changeName, currentUser }) {
   const handleUsernameFieldBlur = (event) => onUserChange(event)

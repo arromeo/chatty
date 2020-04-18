@@ -3,8 +3,20 @@ import '../styles/application.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+// Reducers
+import { rootReducer } from './rootReducer'
 
 // Components
 import { App } from './App'
 
-ReactDOM.render(<App />, document.getElementById('react-root'))
+const store = createStore(rootReducer)
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('react-root')
+)

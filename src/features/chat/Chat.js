@@ -1,10 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 // Components
 import { MessageList } from '../message'
 import { InfoBar } from './InfoBar'
 import { Compose } from './Compose'
+
+// Actions
+import { addMessage } from '../message'
 
 const Layout = styled.div`
   display: flex;
@@ -14,11 +19,10 @@ const Layout = styled.div`
   width: 100%;
 `
 
-export function Chat() {
+function Chat({ addMessage }) {
   const [currentUsername, setCurrentUsername] = useState('Anon')
   const [oldUsername, setOldUsername] = useState('Anon')
   const [userCount, setUserCount] = useState(0)
-  const [messages, setMessages] = useState([])
   const socket = useRef()
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export function Chat() {
         newMessage.type = 'incomingNotification'
         setUserCount(newMessage.userCount)
       }
-      setMessages((prev) => prev.concat(newMessage))
+      addMessage(newMessage)
     }
 
     return () => socket.current.close()
@@ -63,7 +67,7 @@ export function Chat() {
   return (
     <Layout>
       <InfoBar userCount={userCount} />
-      <MessageList messages={messages} />
+      <MessageList />
       <Compose
         currentUser={currentUsername}
         onUserChange={changeCurrentUser}
@@ -73,3 +77,15 @@ export function Chat() {
     </Layout>
   )
 }
+
+Chat.propTypes = {
+  addMessage: PropTypes.func
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  addMessage: (message) => dispatch(addMessage(message))
+})
+
+const ConnectedChat = connect(null, mapDispatchToProps)(Chat)
+
+export { ConnectedChat as Chat }
