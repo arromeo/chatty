@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import ChatBar from './ChatBar'
-import MessageList from './MessageList'
 import Header from './Header'
+
+import { MessageList } from './features/message/MessageList'
 
 class App extends Component {
   constructor(props) {
