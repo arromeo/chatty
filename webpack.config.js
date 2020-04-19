@@ -3,7 +3,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin
 
 module.exports = {
-  devtool: 'eval',
+  devtool: 'eval-source-map',
   entry: ['webpack-dev-server/client?http://localhost:3000', './src/index.js'],
   output: {
     path: path.join(__dirname, 'dist'),

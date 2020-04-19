@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+
+// Hooks
+import { useChattySocket } from './useChattySocket'
+import { selectCurrentUsername } from './chatSelectors'
 
 const ComposeContainer = styled.div`
   display: grid;
@@ -19,31 +24,44 @@ const MessageField = styled.input`
   padding: 4px;
 `
 
-export function Compose({ newMessage, onUserChange, changeName, currentUser }) {
-  const handleUsernameFieldBlur = (event) => onUserChange(event)
+export function Compose() {
+  const { sendUserMessage, sendUsernameChangeMessage } = useChattySocket()
+  const currentUsername = useSelector(selectCurrentUsername)
+  const [usernameFieldValue, setUsernameFieldValue] = useState(
+    () => currentUsername
+  )
+
+  const handleUsernameFieldChange = (event) =>
+    setUsernameFieldValue(event.target.value)
+
+  const handleUsernameFieldSubmit = () => {
+    if (currentUsername !== usernameFieldValue) {
+      sendUsernameChangeMessage(usernameFieldValue)
+    }
+  }
+
+  const handleUsernameFieldBlur = () => handleUsernameFieldSubmit()
 
   const handleUsernameKeyPress = (event) => {
     if (event.key === 'Enter') {
-      onUserChange(event)
+      handleUsernameFieldSubmit()
     }
   }
 
   const handleComposeKeypress = (event) => {
     if (event.key === 'Enter') {
-      newMessage(event)
+      sendUserMessage(event.target.value)
       event.target.value = ''
     }
   }
 
-  const handleNameChange = (event) => changeName(event)
-
   return (
     <ComposeContainer>
       <UsernameField
-        onChange={handleNameChange}
+        onChange={handleUsernameFieldChange}
         onBlur={handleUsernameFieldBlur}
         onKeyPress={handleUsernameKeyPress}
-        value={currentUser}
+        value={usernameFieldValue}
       />
       <MessageField onKeyPress={handleComposeKeypress} />
     </ComposeContainer>
