@@ -5,7 +5,6 @@ import { useSocket } from '../common'
 
 // Actions
 import { addMessage } from '../message'
-import { changeUsername } from './chatActions'
 
 // Selectors
 import { selectCurrentUsername } from './chatSelectors'
@@ -43,7 +42,6 @@ export function useChattySocket() {
       content: `${currentUsername} changed their name to ${newUsername}`
     }
     send(message)
-    dispatch(changeUsername(newUsername))
   }
 
   return { sendUserMessage, sendUsernameChangeMessage }

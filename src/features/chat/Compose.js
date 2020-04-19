@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
+
+// Actions
+import { changeUsername } from './chatActions'
 
 // Hooks
 import { useChattySocket } from './useChattySocket'
@@ -25,6 +28,7 @@ const MessageField = styled.input`
 `
 
 export function Compose() {
+  const dispatch = useDispatch()
   const { sendUserMessage, sendUsernameChangeMessage } = useChattySocket()
   const currentUsername = useSelector(selectCurrentUsername)
   const [usernameFieldValue, setUsernameFieldValue] = useState(
@@ -37,6 +41,7 @@ export function Compose() {
   const handleUsernameFieldSubmit = () => {
     if (currentUsername !== usernameFieldValue) {
       sendUsernameChangeMessage(usernameFieldValue)
+      dispatch(changeUsername(usernameFieldValue))
     }
   }
 
