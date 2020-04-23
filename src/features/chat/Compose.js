@@ -8,6 +8,8 @@ import { changeUsername } from './chatActions'
 
 // Hooks
 import { useChattySocket } from './useChattySocket'
+
+// Selectors
 import { selectCurrentUsername } from './chatSelectors'
 
 const ComposeContainer = styled.div`
