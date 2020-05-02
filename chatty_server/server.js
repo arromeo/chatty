@@ -5,22 +5,16 @@ const SocketServer = require('ws').Server
 const WebSocket = require('ws')
 const uuid = require('uuid/v4')
 
-// Set the port to 3001
 const PORT = 3001
 
-// Create a new express server
 const server = express()
-  // Make the express server serve static assets (html, javascript, css) from
-  // the /public folder
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () =>
     console.log(`Listening on ${PORT}`)
   )
 
-// Create the WebSockets server
 const wss = new SocketServer({ server })
 
-// Message factory to broadcast messages to users depending on type.
 function broadcastMessage(message, color) {
   message = JSON.parse(message)
   message.id = uuid()
@@ -83,7 +77,6 @@ function broadcastMessage(message, color) {
   }
 }
 
-// Generates a random color to assign connecting users.
 function randomColor() {
   const colors = ['blue', 'red', 'green', 'orange', 'purple', 'black', 'teal']
   return colors[Math.floor(Math.random() * 7)]
@@ -92,19 +85,12 @@ function randomColor() {
 wss.on('connection', (ws) => {
   console.log('Client connected. Total count: ' + wss.clients.size)
 
-  // Assigns a color and default name to connecting users. This name is used
-  // to broadcast when this user disconnects from the server.
   const color = randomColor()
   let user = 'Anon'
 
-  // Broadcasts a message to all clients telling them this user has connected
-  // and also updates the number of connected clients.
   broadcastMessage(JSON.stringify({ type: 'userCountAdd' }))
 
-  // Takes incoming message.
   ws.on('message', function incoming(message) {
-    // Determines if incoming message is a name change. If it's a name change,
-    // it updates the local variable before broadcasting.
     const tempMessage = JSON.parse(message)
     if (tempMessage.type === 'postNotification') {
       user = tempMessage.user
@@ -113,8 +99,6 @@ wss.on('connection', (ws) => {
     broadcastMessage(message, color)
   })
 
-  // When the user disconnects from the server, a message is broadcast
-  // indicating this to all other clients.
   ws.on('close', () => {
     console.log('Client disconnected')
     broadcastMessage(JSON.stringify({ type: 'userCountSub', user: user }))
