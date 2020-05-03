@@ -3,7 +3,9 @@
 const express = require('express')
 const SocketServer = require('ws').Server
 const WebSocket = require('ws')
-const uuid = require('uuid/v4')
+const { v4: uuid } = require('uuid')
+
+const { messageTypes } = require('./constants')
 
 const PORT = 3001
 
@@ -20,7 +22,7 @@ function broadcastMessage(message, color) {
   message.id = uuid()
 
   switch (message.type) {
-    case 'postMessage':
+    case messageTypes.USER_MESSAGE:
       console.log(`${message.id}: ${message.username} says ${message.content}`)
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
@@ -28,25 +30,25 @@ function broadcastMessage(message, color) {
             JSON.stringify({
               ...message,
               color: color,
-              type: 'incomingMessage',
+              type: 'incomingMessage'
             })
           )
         }
       })
       break
-    case 'postNotification':
+    case messageTypes.NOTIFICATION_MESSAGE:
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
           client.send(
             JSON.stringify({
               ...message,
-              type: 'incomingNotification',
+              type: 'incomingNotification'
             })
           )
         }
       })
       break
-    case 'userCountAdd':
+    case messageTypes.USER_COUNT_ADD:
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
           client.send(
@@ -54,13 +56,13 @@ function broadcastMessage(message, color) {
               type: 'userCountChange',
               content: 'A new user has connected',
               userCount: wss.clients.size,
-              id: message.id,
+              id: message.id
             })
           )
         }
       })
       break
-    case 'userCountSub':
+    case messageTypes.USER_COUNT_SUB:
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
           client.send(
@@ -68,7 +70,7 @@ function broadcastMessage(message, color) {
               type: 'userCountChange',
               content: `${message.user} has disconnected`,
               userCount: wss.clients.size,
-              id: message.id,
+              id: message.id
             })
           )
         }
