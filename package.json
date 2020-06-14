@@ -7,7 +7,8 @@
     "bundle-analyzer": "webpack-bundle-analyzer --port 4200 dist/stats.json",
     "lint": "eslint --ext .jsx,.js src",
     "server": "node ./chatty_server/server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -36,11 +37,14 @@
     "@babel/core": "7.10.2",
     "@babel/preset-env": "7.10.2",
     "@babel/preset-react": "7.10.1",
+    "@testing-library/react": "^10.2.1",
     "babel-eslint": "10.1.0",
+    "babel-jest": "26.0.1",
     "babel-loader": "8.1.0",
     "css-loader": "3.6.0",
     "eslint": "7.2.0",
     "eslint-plugin-react": "7.20.0",
+    "jest": "26.0.1",
     "style-loader": "1.2.1",
     "webpack": "4.43.0",
     "webpack-bundle-analyzer": "3.8.0",
